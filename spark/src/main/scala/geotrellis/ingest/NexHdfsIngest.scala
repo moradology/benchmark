@@ -45,7 +45,6 @@ object NexHdfsIngest extends ArgMain[HadoopIngestArgs] with LazyLogging {
         classOf[Tile]
       )
 
-    val catalog = HadoopCatalog(sparkContext, args.catalogPath)
     Ingest[SpaceTimeInputKey, SpaceTimeKey](source, args.destCrs, layoutScheme){ (rdd, level) =>
       val catalog = HadoopRasterCatalog(args.catalogPath)
       catalog.writer[SpaceTimeKey](ZCurveKeyIndexMethod.byYear).write(LayerId(args.layerName, level.zoom), rdd)
